@@ -1,0 +1,64 @@
+version: '2.1'
+
+services:
+  product:
+    build: product
+    mem_limit: 512m
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongodb
+
+  payment:
+    build: payment
+    mem_limit: 512m
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+
+  mongodb:
+    image: mongo:5.0
+    restart: always
+    mem_limit: 512m
+
+    ports:
+      - "27017:27017"
+
+    command: mongod
+
+    healthcheck:
+      test: "mongo --eval 'db.stats().ok'"
+      interval: 5s
+      timeout: 2s
+      retries: 60
+
+  mysql:
+    image: mysql:8
+    mem_limit: 512m
+    restart: always
+    environment:
+      MYSQL_DATABASE: payments
+      MYSQL_ROOT_PASSWORD: seed
+    ports:
+      - 3306:3306
+    volumes:
+      - ./scripts/db:/docker-entrypoint-initdb.d/
+
+    healthcheck:
+      test: "/usr/bin/mysql --user=user --password=pwd --execute \"SHOW DATABASES;\""
+      interval: 5s
+      timeout: 2s
+      retries: 60
+
+  #rabbitmq:
+  #  image: rabbitmq:3.8.11-management
+  #  mem_limit: 512m
+  #  ports:
+  #    - 5672:5672
+  #    - 15672:15672
+  #  healthcheck:
+  #    test: ["CMD", "rabbitmqctl", "status"]
+  #    interval: 5s
+  #    timeout: 2s
+  #    retries: 60

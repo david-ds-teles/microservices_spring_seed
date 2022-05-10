@@ -1,0 +1,58 @@
+plugins {
+    id 'java'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+}
+
+jar {
+    enabled = false
+}
+
+allprojects {
+
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+
+    apply plugin: 'java'
+    apply plugin: 'io.spring.dependency-management'
+
+    group 'com.david.ds.teles.seed.microservices'
+    version '1.0.0.0'
+    sourceCompatibility = '17'
+
+    repositories {
+        mavenCentral()
+    }
+
+    ext {
+        springBootVersion = '2.6.7'
+        lombokVersion = '1.18.24'
+        springdocVersion = '1.6.8'
+        junitJupterVersion = '5.8.2'
+        testContainersVersion = '1.15.2'
+        gradleSpringPlugin = '2.3.3.RELEASE'
+        mapstructVersion = '1.4.2.Final'
+    }
+
+    dependencies {
+
+        implementation("org.springframework.boot:spring-boot-gradle-plugin:$gradleSpringPlugin")
+
+        compileOnly "org.projectlombok:lombok:${lombokVersion}"
+        annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+        testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+        testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+        implementation "org.mapstruct:mapstruct:$mapstructVersion"
+        annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
+        compileOnly "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+}

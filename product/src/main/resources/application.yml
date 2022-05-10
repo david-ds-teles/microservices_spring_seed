@@ -1,0 +1,29 @@
+spring.data.mongodb:
+  host: localhost
+  port: 27017
+  database: products-db
+  authenticationDatabase: admin
+  user: seed
+  password: seed
+
+springdoc:
+  swagger-ui.path: /swagger-ui.html
+  api-docs.path: /api-docs
+  packagesToScan: com.david.ds.teles.seed.microservices
+  pathsToMatch: /**
+
+api:
+  common:
+    version: 1.0.0.0
+    title: product-microservice
+    description: A seed microservice project to help to guide you
+
+    contact:
+      name: David Teles
+      url: https://www.linkedin.com/in/david-teles/?locale=en_US
+      email: david.ds.teles@gmail.com
+
+  rsp:
+    ok: everything looks fine
+    badRequest: Bad Request, invalid data or parameters
+    notFound: Not found
