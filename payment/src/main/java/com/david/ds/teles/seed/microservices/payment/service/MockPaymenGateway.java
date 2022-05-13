@@ -11,6 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+
+import java.math.BigDecimal;
 
 import static java.util.logging.Level.FINE;
 
@@ -19,10 +22,9 @@ import static java.util.logging.Level.FINE;
 @AllArgsConstructor
 public class MockPaymenGateway implements PaymentService {
 
+    private final Scheduler threadScheduler;
     private ProductIntegrationService productIntegration;
-
     private PaymentRepository repository;
-
     private PaymentMapper mapper = Mappers.getMapper(PaymentMapper.class);
 
     @Override
@@ -41,16 +43,21 @@ public class MockPaymenGateway implements PaymentService {
         if (payment.products() == null || payment.products().isEmpty())
             throw new MyExceptionError("products invalid", 400);
 
+
         return productIntegration.findAllById(payment.products())
                 .map(p -> p.value())
                 .reduce((p1, p2) -> p1.add(p2))
                 .log(log.getName(), FINE)
-                .flatMap(total -> {
+                .flatMap(total -> savePayment(payment, total));
+    }
+
+    Mono<PaymentDTO> savePayment(PaymentDTO payment, BigDecimal total) {
+
+        return Mono.fromCallable(() -> {
                     log.info("total sum of products are: {}", total);
-                    PaymentEntity paid = repository.save(new PaymentEntity(payment.cardNumber(), total, PaymentStatus.PAID));
-                    log.info("payment successfully: {}", paid);
-                    PaymentDTO result = mapper.toDTO(paid);
-                    return Mono.just(result);
-                });
+                    return repository.save(new PaymentEntity(payment.cardNumber(), total, PaymentStatus.PAID));
+                })
+                .map(paid -> mapper.toDTO(paid))
+                .subscribeOn(threadScheduler);
     }
 }
