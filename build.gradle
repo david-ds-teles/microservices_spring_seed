@@ -50,6 +50,11 @@ subprojects {
         implementation "org.mapstruct:mapstruct:$mapstructVersion"
         annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
         compileOnly "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupterVersion}"
+        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitJupterVersion}"
+
     }
 
     test {

@@ -15,13 +15,12 @@ This is a starter point for springboot projects. It has basic examples and confi
 You'll find here:
 
 * basic project structure
-* example of layers communication using dependecy injection.
-* interceptors for exceptions and logging
-* example of client consumer of api using webClient.
-* connection with mysql to illustrate how entities works with open-session-in-view off.
+* tests of all layers
+* example of layers communication using dependency injection.
+* interceptors for exceptions and language
+* example of client consumer an api using webClient.
 * i18n configurations as well as messages bundles to both spring and hibernate validation changing dynamically.
 * multiple profiles to separate environment.
-* prettier.
 
 ## Swagger
 To access the open api specification and browser on api docs.

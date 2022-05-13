@@ -1,12 +1,13 @@
 package com.david.ds.teles.seed.microservices.product.services;
 
-import com.david.ds.teles.seed.microservices.payment.exceptions.MyExceptionError;
+import com.david.ds.teles.seed.microservices.utils.exceptions.MyExceptionError;
+import com.david.ds.teles.seed.microservices.utils.i18n.AppMessage;
 import com.david.ds.teles.seed.microservices.product.data.entities.ProductEntity;
 import com.david.ds.teles.seed.microservices.product.data.persistence.ProductRepository;
 import com.david.ds.teles.seed.microservices.product.dto.ProductDTO;
 import com.david.ds.teles.seed.microservices.product.mappers.ProductMapper;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
@@ -18,16 +19,13 @@ import java.util.stream.StreamSupport;
 
 @Service
 @Slf4j
+@AllArgsConstructor
 public class ProductServiceImp implements ProductService {
 
     private final ProductMapper mapper;
     private ProductRepository repository;
 
-    @Autowired
-    public ProductServiceImp(ProductRepository repository, ProductMapper mapper) {
-        this.repository = repository;
-        this.mapper = mapper;
-    }
+    private AppMessage messageBundle;
 
     @Override
     public ProductDTO save(ProductDTO product) {
@@ -39,13 +37,13 @@ public class ProductServiceImp implements ProductService {
             ProductDTO result = mapper.toDTO(productEntity);
             return result;
         } catch (DuplicateKeyException dke) {
-            throw new MyExceptionError("Duplicate Product Id: " + product.id());
+            throw new MyExceptionError(messageBundle.getMessage("duplicated_product_id", new String[]{product.id()}));
         }
     }
 
     @Override
     public void update(String id, @NotNull ProductDTO product) {
-        ProductEntity entity = repository.findById(id).orElseThrow(() -> new MyExceptionError("No product found for id: " + id, 404));
+        ProductEntity entity = repository.findById(id).orElseThrow(() -> new MyExceptionError(messageBundle.getMessage("product_not_found", new String[]{id}), 404));
         entity.setName(product.name());
         entity.setValue(product.value());
         repository.save(entity);
@@ -54,7 +52,7 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     public ProductDTO findById(String id) {
-        ProductEntity entity = repository.findById(id).orElseThrow(() -> new MyExceptionError("No product found for id: " + id, 404));
+        ProductEntity entity = repository.findById(id).orElseThrow(() -> new MyExceptionError(messageBundle.getMessage("product_not_found", new String[]{id}), 404));
         log.info("product found {}", entity);
         ProductDTO dto = mapper.toDTO(entity);
         return dto;
@@ -65,7 +63,7 @@ public class ProductServiceImp implements ProductService {
 
         Iterable<ProductEntity> iterator;
 
-        if(products != null && !products.isEmpty())
+        if (products != null && !products.isEmpty())
             iterator = repository.findAllById(products);
         else
             iterator = repository.findAll();
@@ -77,7 +75,7 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     public void delete(String id) {
-        ProductEntity entity = repository.findById(id).orElseThrow(() -> new MyExceptionError("Product with id: " + id + " not found", 404));
+        ProductEntity entity = repository.findById(id).orElseThrow(() -> new MyExceptionError(messageBundle.getMessage("product_not_found", new String[]{id}), 404));
         repository.delete(entity);
         log.info("product deleted {}", entity);
     }

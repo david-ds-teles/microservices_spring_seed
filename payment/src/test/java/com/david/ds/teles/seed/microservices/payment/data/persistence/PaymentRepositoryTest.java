@@ -8,7 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -22,8 +24,13 @@ import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORT
 public class PaymentRepositoryTest extends TestContainersConfig {
 
     private final Long validPaymentId = 1l;
+
+    @MockBean
+    private WebClient.Builder webClient;
+
     @Autowired
     private PaymentRepository repository;
+
     private PaymentEntity validPayment;
 
     @BeforeEach

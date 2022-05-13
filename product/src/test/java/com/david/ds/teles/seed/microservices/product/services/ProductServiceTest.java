@@ -1,10 +1,11 @@
 package com.david.ds.teles.seed.microservices.product.services;
 
-import com.david.ds.teles.seed.microservices.payment.exceptions.MyExceptionError;
+import com.david.ds.teles.seed.microservices.utils.exceptions.MyExceptionError;
 import com.david.ds.teles.seed.microservices.product.data.entities.ProductEntity;
 import com.david.ds.teles.seed.microservices.product.data.persistence.ProductRepository;
 import com.david.ds.teles.seed.microservices.product.dto.ProductDTO;
 import com.david.ds.teles.seed.microservices.product.mappers.ProductMapper;
+import com.david.ds.teles.seed.microservices.utils.i18n.AppMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,7 +15,6 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +30,9 @@ public class ProductServiceTest {
 
     @Spy
     ProductMapper mapper;
+
+    @Spy
+    AppMessage messages;
 
     @InjectMocks
     ProductServiceImp service;

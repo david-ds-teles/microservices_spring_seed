@@ -1,5 +1,6 @@
 package com.david.ds.teles.seed.microservices.payment.api;
 
+import com.david.ds.teles.seed.microservices.payment.config.OpenApiConfig;
 import com.david.ds.teles.seed.microservices.payment.config.TestContainersConfig;
 import com.david.ds.teles.seed.microservices.payment.dto.PaymentDTO;
 import com.david.ds.teles.seed.microservices.payment.dto.ProductDTO;
@@ -7,6 +8,10 @@ import com.david.ds.teles.seed.microservices.payment.service.ProductIntegrationS
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
