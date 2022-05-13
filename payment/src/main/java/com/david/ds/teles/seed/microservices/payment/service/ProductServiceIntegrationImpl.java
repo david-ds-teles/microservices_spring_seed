@@ -1,7 +1,7 @@
 package com.david.ds.teles.seed.microservices.payment.service;
 
 import com.david.ds.teles.seed.microservices.payment.dto.ProductDTO;
-import com.david.ds.teles.seed.microservices.payment.exceptions.MyExceptionError;
+import com.david.ds.teles.seed.microservices.utils.exceptions.MyExceptionError;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

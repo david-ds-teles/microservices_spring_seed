@@ -20,7 +20,7 @@ import java.time.OffsetDateTime;
 public class PaymentEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Version

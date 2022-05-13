@@ -23,7 +23,6 @@ dependencies {
 	implementation "org.springdoc:springdoc-openapi-webflux-ui:$springdocVersion"
 	implementation "org.springdoc:springdoc-openapi-ui:$springdocVersion"
 
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
 
 	implementation platform("org.testcontainers:testcontainers-bom:$testContainersVersion")

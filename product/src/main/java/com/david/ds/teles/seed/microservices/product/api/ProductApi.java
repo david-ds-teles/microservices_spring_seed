@@ -3,7 +3,7 @@ package com.david.ds.teles.seed.microservices.product.api;
 import com.david.ds.teles.seed.microservices.product.api.specs.ProductApiSpec;
 import com.david.ds.teles.seed.microservices.product.dto.ProductDTO;
 import com.david.ds.teles.seed.microservices.product.services.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,14 +14,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/product")
+@AllArgsConstructor
 public class ProductApi implements ProductApiSpec {
 
     private ProductService service;
-
-    @Autowired
-    public ProductApi(ProductService service){
-        this.service = service;
-    }
 
     @Override
     public ResponseEntity<ProductDTO> fetch(String id) {
@@ -30,7 +26,7 @@ public class ProductApi implements ProductApiSpec {
     }
 
     @Override
-    public ResponseEntity< List<ProductDTO>> fetchAllById(List<String> products) {
+    public ResponseEntity<List<ProductDTO>> fetchAllById(List<String> products) {
         List<ProductDTO> result = service.findAllById(products);
         return ResponseEntity.ok(result);
     }

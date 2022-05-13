@@ -24,6 +24,8 @@ import static reactor.core.publisher.Mono.just;
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 class ProductApiTest extends TestContainersConfig {
 
+    private final String nonexistentProductId = "13";
+
     @Autowired
     private WebTestClient client;
 
@@ -44,9 +46,10 @@ class ProductApiTest extends TestContainersConfig {
 
         assertTrue(repository.findById("1").isPresent());
 
-        getProductAndCheckStatus(productId, OK).jsonPath("$.id").isEqualTo(productId);
+        getProductAndCheckStatus(productId, null, OK).jsonPath("$.id").isEqualTo(productId);
+        getProductAndCheckStatus(nonexistentProductId, null, NOT_FOUND).jsonPath("$.message").isEqualTo("no product found for id: " + nonexistentProductId);
+        getProductAndCheckStatus(nonexistentProductId, "pt-BR",NOT_FOUND).jsonPath("$.message").isEqualTo("nenhum produto encontrado para id: " + nonexistentProductId);
     }
-
 
     @Test
     void should_fetch_all_products_by_its_id() {
@@ -78,8 +81,8 @@ class ProductApiTest extends TestContainersConfig {
         assertEquals(entity.getId(), dto.id());
         assertEquals(entity.getName(), dto.name());
 
-        String nonExistentProductId = "13";
-        updateProductAndCheckStatus(nonExistentProductId, dto, NOT_FOUND);
+        updateProductAndCheckStatus(nonexistentProductId, dto, NOT_FOUND).jsonPath("$.message").isEqualTo("no product found for id: " + nonexistentProductId);
+        ;
     }
 
     private WebTestClient.BodyContentSpec updateProductAndCheckStatus(String productId, ProductDTO dto, HttpStatus expectedStatus) {
@@ -103,7 +106,8 @@ class ProductApiTest extends TestContainersConfig {
         deleteProductAndCheckStatus(productId, OK);
         assertFalse(repository.findById(productId).isPresent());
 
-        deleteProductAndCheckStatus(productId, NOT_FOUND);
+        deleteProductAndCheckStatus(nonexistentProductId, NOT_FOUND).jsonPath("$.message").isEqualTo("no product found for id: " + nonexistentProductId);
+        ;
     }
 
     @Test
@@ -116,21 +120,14 @@ class ProductApiTest extends TestContainersConfig {
         assertTrue(repository.findById(productId).isPresent());
 
         postProductAndCheckStatus(productId, BAD_REQUEST)
-                .jsonPath("$.message").isEqualTo("Duplicate Product Id: " + productId);
+                .jsonPath("$.message").isEqualTo("the provided id " + productId + " is duplicated");
     }
 
-    @Test
-    void not_found_when_no_product_with_given_id_is_informed() {
-
-        String productIdNotFound = "13";
-        getProductAndCheckStatus(productIdNotFound, NOT_FOUND)
-                .jsonPath("$.message").isEqualTo("No product found for id: " + productIdNotFound);
-    }
-
-    private WebTestClient.BodyContentSpec getProductAndCheckStatus(String productIdPath, HttpStatus expectedStatus) {
+    private WebTestClient.BodyContentSpec getProductAndCheckStatus(String productIdPath, String lang, HttpStatus expectedStatus) {
         return client.get()
                 .uri("/product/" + productIdPath)
                 .accept(APPLICATION_JSON)
+                .header("accept-language", lang == null ? "en" : lang)
                 .exchange()
                 .expectStatus().isEqualTo(expectedStatus)
                 .expectHeader().contentType(APPLICATION_JSON)
