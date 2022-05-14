@@ -15,9 +15,10 @@ This is a starter point for springboot projects. It has basic examples and confi
 You'll find here:
 
 * multiple module project structure
-* example of layers communication using dependency injection.
 * service discovery
-* communication between microservices using openfeign
+* tracing
+* openfeign
+* layers communication using dependency injection.
 * interceptors for exceptions and language
 * i18n configurations as well as messages bundles to both spring and hibernate validation changing dynamically.
 * multiple profiles to separate environment.
