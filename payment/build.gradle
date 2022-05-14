@@ -13,12 +13,16 @@ jar {
 
 dependencies {
 	implementation project(':utils')
+	implementation project(':clients')
 
 	implementation 'org.springframework.boot:spring-boot-devtools'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'mysql:mysql-connector-java'
+
+	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 
 	implementation "org.springdoc:springdoc-openapi-webflux-ui:$springdocVersion"
 	implementation "org.springdoc:springdoc-openapi-ui:$springdocVersion"

@@ -1,5 +1,6 @@
 package com.david.ds.teles.seed.microservices.payment.service;
 
+import com.david.ds.teles.seed.microservices.clients.product.ProductClient;
 import com.david.ds.teles.seed.microservices.payment.data.entities.PaymentEntity;
 import com.david.ds.teles.seed.microservices.payment.data.persistence.PaymentRepository;
 import com.david.ds.teles.seed.microservices.payment.dto.PaymentDTO;
@@ -10,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
@@ -23,8 +25,11 @@ import static java.util.logging.Level.FINE;
 public class MockPaymenGateway implements PaymentService {
 
     private final Scheduler threadScheduler;
-    private ProductIntegrationService productIntegration;
+
+    private final ProductClient productClient;
+
     private PaymentRepository repository;
+
     private PaymentMapper mapper = Mappers.getMapper(PaymentMapper.class);
 
     @Override
@@ -43,12 +48,12 @@ public class MockPaymenGateway implements PaymentService {
         if (payment.products() == null || payment.products().isEmpty())
             throw new MyExceptionError("products invalid", 400);
 
-
-        return productIntegration.findAllById(payment.products())
+        return Flux.fromIterable(this.productClient.fetchAllById(payment.products()))
                 .map(p -> p.value())
                 .reduce((p1, p2) -> p1.add(p2))
                 .log(log.getName(), FINE)
-                .flatMap(total -> savePayment(payment, total));
+                .flatMap(total -> savePayment(payment, total))
+                .subscribeOn(this.threadScheduler);
     }
 
     Mono<PaymentDTO> savePayment(PaymentDTO payment, BigDecimal total) {

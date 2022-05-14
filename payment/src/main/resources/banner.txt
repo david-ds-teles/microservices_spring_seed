@@ -1,0 +1,7 @@
+  ___                                      _
+ | _ \  __ _   _  _   _ __    ___   _ _   | |_
+ |  _/ / _` | | || | | '  \  / -_) | ' \  |  _|
+ |_|   \__,_|  \_, | |_|_|_| \___| |_||_|  \__|
+               |__/
+${application.title} ${application.version}
+David Teles' microservice ${spring-boot.version}

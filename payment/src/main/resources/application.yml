@@ -1,11 +1,12 @@
 microservices:
-  product: http://localhost:8080
+  product: PRODUCT
 
 server:
   port: 8090
   error.include-message: always
 
 spring:
+  application.name: payment
   datasource:
     url: jdbc:mysql://localhost/payments
     username: root
@@ -25,6 +26,15 @@ spring:
 
   main:
     lazy-initialization: true
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    healthcheck:
+      enabled: true
+    fetch-registry: true
+    register-with-eureka: true
 
 springdoc:
   swagger-ui.path: /swagger-ui.html

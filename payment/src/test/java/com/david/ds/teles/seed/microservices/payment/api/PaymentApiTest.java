@@ -1,17 +1,12 @@
 package com.david.ds.teles.seed.microservices.payment.api;
 
-import com.david.ds.teles.seed.microservices.payment.config.OpenApiConfig;
+import com.david.ds.teles.seed.microservices.clients.product.ProductClient;
+import com.david.ds.teles.seed.microservices.clients.product.dto.ProductDTO;
 import com.david.ds.teles.seed.microservices.payment.config.TestContainersConfig;
 import com.david.ds.teles.seed.microservices.payment.dto.PaymentDTO;
-import com.david.ds.teles.seed.microservices.payment.dto.ProductDTO;
-import com.david.ds.teles.seed.microservices.payment.service.ProductIntegrationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
-import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
@@ -33,14 +28,14 @@ class PaymentApiTest extends TestContainersConfig {
     private WebTestClient client;
 
     @MockBean
-    private ProductIntegrationService productIntegration;
+    private ProductClient productClient;
 
     private List<String> validProductIds = List.of("1", "2");
 
     @BeforeEach
     void configuration() {
-        List<ProductDTO> products = List.of(new ProductDTO("1", BigDecimal.TEN), new ProductDTO("2", BigDecimal.ONE));
-        when(productIntegration.findAllById(validProductIds)).thenReturn(Flux.fromIterable(products));
+        List<ProductDTO> products = List.of(new ProductDTO("1", "product1", BigDecimal.TEN), new ProductDTO("2", "product2", BigDecimal.ONE));
+        when(productClient.fetchAllById(validProductIds)).thenReturn(products);
     }
 
     @Test

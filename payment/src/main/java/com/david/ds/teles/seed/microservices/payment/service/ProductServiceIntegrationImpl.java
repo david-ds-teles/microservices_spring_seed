@@ -1,6 +1,6 @@
 package com.david.ds.teles.seed.microservices.payment.service;
 
-import com.david.ds.teles.seed.microservices.payment.dto.ProductDTO;
+import com.david.ds.teles.seed.microservices.clients.product.dto.ProductDTO;
 import com.david.ds.teles.seed.microservices.utils.exceptions.MyExceptionError;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,23 +13,27 @@ import java.util.List;
 
 import static java.util.logging.Level.FINE;
 
-@Service
+/**
+ * Using feign client now. This is just for future reference
+ */
+@Deprecated(forRemoval = true)@Service
 @Slf4j
 public class ProductServiceIntegrationImpl implements ProductIntegrationService {
 
-    private final String productMicroserviceUrl;
     private final WebClient webClient;
 
-    public ProductServiceIntegrationImpl(WebClient.Builder webClient, @Value("${microservices.product}") String productMicroserviceUrl) {
+    private String productMicroserviceUrl;
+
+    public ProductServiceIntegrationImpl(WebClient.Builder webClient, @Value("${microservices.product}") String productMicroservice) {
         this.webClient = webClient.build();
-        this.productMicroserviceUrl = productMicroserviceUrl;
+        this.productMicroserviceUrl = "http://" + productMicroservice;
     }
 
     @Override
     public Flux<ProductDTO> findAllById(List<String> productsId) {
         log.info("starting call to product microservices");
 
-        String ids = productsId.toString().replace("[","").replace("]","");
+        String ids = productsId.toString().replace("[", "").replace("]", "");
 
         return webClient.get()
                 .uri(productMicroserviceUrl + "/product/all/" + ids)

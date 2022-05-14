@@ -35,6 +35,8 @@ subprojects {
         testContainersVersion = '1.15.2'
         gradleSpringPlugin = '2.3.3.RELEASE'
         mapstructVersion = '1.4.2.Final'
+        springCloudVersion = '2021.0.2'
+        playtikaFeignVersion = '3.2.1'
     }
 
     dependencies {
@@ -55,6 +57,12 @@ subprojects {
         testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupterVersion}"
         testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitJupterVersion}"
 
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        }
     }
 
     test {

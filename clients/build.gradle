@@ -1,0 +1,10 @@
+plugins {
+    id 'org.springframework.boot' version '2.6.7'
+    id 'application'
+}
+
+dependencies {
+
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+}
