@@ -60,6 +60,7 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     public List<ProductDTO> findAllById(List<String> products) {
+        log.info("starting findAllById for ids {} ", products);
 
         Iterable<ProductEntity> iterator;
 

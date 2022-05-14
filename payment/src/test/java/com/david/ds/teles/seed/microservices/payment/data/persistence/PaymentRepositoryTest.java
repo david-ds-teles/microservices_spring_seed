@@ -1,8 +1,10 @@
 package com.david.ds.teles.seed.microservices.payment.data.persistence;
 
+import com.david.ds.teles.seed.microservices.clients.product.ProductClient;
 import com.david.ds.teles.seed.microservices.payment.config.TestContainersConfig;
 import com.david.ds.teles.seed.microservices.payment.data.entities.PaymentEntity;
 import com.david.ds.teles.seed.microservices.payment.enums.PaymentStatus;
+import com.netflix.discovery.EurekaClient;
 import org.hibernate.annotations.CreationTimestamp;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,6 +31,9 @@ public class PaymentRepositoryTest extends TestContainersConfig {
 
     @MockBean
     private WebClient.Builder webClient;
+
+    @MockBean
+    private ProductClient client;
 
     @Autowired
     private PaymentRepository repository;
