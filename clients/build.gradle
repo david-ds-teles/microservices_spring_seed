@@ -1,10 +1,9 @@
 plugins {
-    id 'org.springframework.boot' version '2.6.7'
-    id 'application'
+    id 'java-library'
 }
 
 dependencies {
-
+    implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 }

@@ -3,5 +3,7 @@ include ':utils'
 include ':product'
 include ':payment'
 include ':discovery'
-include 'clients'
+include ':clients'
+include ':api-gateway'
+
 
