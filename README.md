@@ -18,6 +18,7 @@ You'll find here:
 * service discovery
 * tracing
 * openfeign
+* api gateway
 * layers communication using dependency injection.
 * interceptors for exceptions and language
 * i18n configurations as well as messages bundles to both spring and hibernate validation changing dynamically.
