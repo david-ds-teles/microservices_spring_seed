@@ -3,6 +3,14 @@ microservices:
 
 spring.jpa.hibernate.ddl-auto: create-drop
 
+rabbitmq:
+  exchanges:
+    internal: internal.exchange
+  queue:
+    notification: notification.queue
+  routing-keys:
+    internal-notification: internal.notification.routing-key
+
 springdoc:
   swagger-ui.path: /swagger-ui.html
   api-docs.path: /api-docs

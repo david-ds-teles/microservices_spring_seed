@@ -48,7 +48,7 @@ class ProductApiTest extends TestContainersConfig {
 
         getProductAndCheckStatus(productId, null, OK).jsonPath("$.id").isEqualTo(productId);
         getProductAndCheckStatus(nonexistentProductId, null, NOT_FOUND).jsonPath("$.message").isEqualTo("no product found for id: " + nonexistentProductId);
-        getProductAndCheckStatus(nonexistentProductId, "pt-BR",NOT_FOUND).jsonPath("$.message").isEqualTo("nenhum produto encontrado para id: " + nonexistentProductId);
+        getProductAndCheckStatus(nonexistentProductId, "pt-BR", NOT_FOUND).jsonPath("$.message").isEqualTo("nenhum produto encontrado para id: " + nonexistentProductId);
     }
 
     @Test

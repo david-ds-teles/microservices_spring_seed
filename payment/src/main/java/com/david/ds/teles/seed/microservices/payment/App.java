@@ -10,7 +10,10 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan("com.david.ds.teles.seed.microservices")
 @EnableEurekaClient
 @EnableFeignClients(
-        basePackages = "com.david.ds.teles.seed.microservices.clients"
+        basePackages = {
+                "com.david.ds.teles.seed.microservices.clients",
+                "com.david.ds.teles.seed.microservices.common.notification"
+        }
 )
 public class App {
 

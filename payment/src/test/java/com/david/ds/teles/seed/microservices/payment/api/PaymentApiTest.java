@@ -2,6 +2,8 @@ package com.david.ds.teles.seed.microservices.payment.api;
 
 import com.david.ds.teles.seed.microservices.clients.product.ProductClient;
 import com.david.ds.teles.seed.microservices.clients.product.dto.ProductDTO;
+import com.david.ds.teles.seed.microservices.common.notification.amqp.MessagePublisher;
+import com.david.ds.teles.seed.microservices.common.notification.amqp.config.AmqpConfig;
 import com.david.ds.teles.seed.microservices.payment.config.TestContainersConfig;
 import com.david.ds.teles.seed.microservices.payment.dto.PaymentDTO;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +14,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
-import reactor.core.publisher.Flux;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -29,6 +30,12 @@ class PaymentApiTest extends TestContainersConfig {
 
     @MockBean
     private ProductClient productClient;
+
+    @MockBean
+    private AmqpConfig config;
+
+    @MockBean
+    private MessagePublisher pub;
 
     private List<String> validProductIds = List.of("1", "2");
 
