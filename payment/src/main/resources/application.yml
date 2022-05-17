@@ -31,6 +31,9 @@ spring:
   zipkin:
     base-url: http://localhost:9411
 
+  rabbitmq:
+    addresses: localhost:5672
+
 eureka:
   client:
     serviceUrl:
@@ -39,6 +42,15 @@ eureka:
       enabled: true
     fetch-registry: true
     register-with-eureka: true
+
+rabbitmq:
+  exchanges:
+    internal: internal.exchange
+  queue:
+    notification: notification.queue
+  routing-keys:
+    internal-notification: internal.notification.routing-key
+
 
 springdoc:
   swagger-ui.path: /swagger-ui.html

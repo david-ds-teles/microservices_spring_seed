@@ -81,7 +81,7 @@ class ProductRepositoryTest extends TestContainersConfig {
     @Test
     void throw_error_when_id_is_already_in_use() {
         assertThrows(DuplicateKeyException.class, () -> {
-            ProductEntity entity = new ProductEntity(initialEntitySaved.getId(),  "test", BigDecimal.TEN);
+            ProductEntity entity = new ProductEntity(initialEntitySaved.getId(), "test", BigDecimal.TEN);
             repository.save(entity);
         });
     }
@@ -111,7 +111,7 @@ class ProductRepositoryTest extends TestContainersConfig {
         repository.deleteAll();
 
         List<ProductEntity> newProducts = rangeClosed(1001, 1010)
-                .mapToObj(i -> new ProductEntity(i+"","test " + i, BigDecimal.TEN))
+                .mapToObj(i -> new ProductEntity(i + "", "test " + i, BigDecimal.TEN))
                 .collect(Collectors.toList());
         repository.saveAll(newProducts);
 

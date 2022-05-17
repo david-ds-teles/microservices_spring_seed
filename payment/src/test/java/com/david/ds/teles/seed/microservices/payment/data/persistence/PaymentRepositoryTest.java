@@ -1,11 +1,11 @@
 package com.david.ds.teles.seed.microservices.payment.data.persistence;
 
 import com.david.ds.teles.seed.microservices.clients.product.ProductClient;
+import com.david.ds.teles.seed.microservices.common.notification.amqp.MessagePublisher;
+import com.david.ds.teles.seed.microservices.common.notification.amqp.config.AmqpConfig;
 import com.david.ds.teles.seed.microservices.payment.config.TestContainersConfig;
 import com.david.ds.teles.seed.microservices.payment.data.entities.PaymentEntity;
 import com.david.ds.teles.seed.microservices.payment.enums.PaymentStatus;
-import com.netflix.discovery.EurekaClient;
-import org.hibernate.annotations.CreationTimestamp;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import javax.persistence.*;
-import javax.validation.constraints.PastOrPresent;
 import java.math.BigDecimal;
-import java.time.OffsetDateTime;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,10 +27,13 @@ import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORT
 public class PaymentRepositoryTest extends TestContainersConfig {
 
     @MockBean
-    private WebClient.Builder webClient;
+    private ProductClient client;
 
     @MockBean
-    private ProductClient client;
+    private AmqpConfig config;
+
+    @MockBean
+    private MessagePublisher pub;
 
     @Autowired
     private PaymentRepository repository;

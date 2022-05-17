@@ -1,14 +1,8 @@
 package com.david.ds.teles.seed.microservices.payment;
 
-import com.david.ds.teles.seed.microservices.utils.i18n.AppMessage;
-import com.david.ds.teles.seed.microservices.utils.i18n.DefaultAppMessages;
+import com.david.ds.teles.seed.microservices.commons.i18n.AppMessage;
+import com.david.ds.teles.seed.microservices.commons.i18n.DefaultAppMessages;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
-import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Locale;
 

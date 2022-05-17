@@ -1,7 +1,7 @@
 package com.david.ds.teles.seed.microservices.product.services;
 
-import com.david.ds.teles.seed.microservices.utils.exceptions.MyExceptionError;
-import com.david.ds.teles.seed.microservices.utils.i18n.AppMessage;
+import com.david.ds.teles.seed.microservices.commons.exceptions.MyExceptionError;
+import com.david.ds.teles.seed.microservices.commons.i18n.AppMessage;
 import com.david.ds.teles.seed.microservices.product.data.entities.ProductEntity;
 import com.david.ds.teles.seed.microservices.product.data.persistence.ProductRepository;
 import com.david.ds.teles.seed.microservices.product.dto.ProductDTO;

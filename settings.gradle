@@ -1,9 +1,10 @@
 rootProject.name = 'seed_microservices'
-include ':utils'
+include ':commons'
+include ':common-notification'
 include ':product'
 include ':payment'
 include ':discovery'
 include ':clients'
 include ':api-gateway'
-
+include 'notification'
 

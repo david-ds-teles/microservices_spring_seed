@@ -1,7 +1,7 @@
 package com.david.ds.teles.seed.microservices.product;
 
-import com.david.ds.teles.seed.microservices.utils.i18n.AppMessage;
-import com.david.ds.teles.seed.microservices.utils.i18n.DefaultAppMessages;
+import com.david.ds.teles.seed.microservices.commons.i18n.AppMessage;
+import com.david.ds.teles.seed.microservices.commons.i18n.DefaultAppMessages;
 import org.junit.jupiter.api.Test;
 
 import java.util.Locale;

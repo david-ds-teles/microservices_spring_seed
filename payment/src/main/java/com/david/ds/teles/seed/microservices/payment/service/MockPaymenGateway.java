@@ -1,12 +1,14 @@
 package com.david.ds.teles.seed.microservices.payment.service;
 
 import com.david.ds.teles.seed.microservices.clients.product.ProductClient;
+import com.david.ds.teles.seed.microservices.common.notification.amqp.MessagePublisher;
+import com.david.ds.teles.seed.microservices.common.notification.amqp.NotificationData;
+import com.david.ds.teles.seed.microservices.commons.exceptions.MyExceptionError;
 import com.david.ds.teles.seed.microservices.payment.data.entities.PaymentEntity;
 import com.david.ds.teles.seed.microservices.payment.data.persistence.PaymentRepository;
 import com.david.ds.teles.seed.microservices.payment.dto.PaymentDTO;
 import com.david.ds.teles.seed.microservices.payment.enums.PaymentStatus;
 import com.david.ds.teles.seed.microservices.payment.mappers.PaymentMapper;
-import com.david.ds.teles.seed.microservices.utils.exceptions.MyExceptionError;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.factory.Mappers;
@@ -16,6 +18,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import static java.util.logging.Level.FINE;
 
@@ -27,6 +30,8 @@ public class MockPaymenGateway implements PaymentService {
     private final Scheduler threadScheduler;
 
     private final ProductClient productClient;
+
+    private MessagePublisher<NotificationData> publisher;
 
     private PaymentRepository repository;
 
@@ -60,7 +65,15 @@ public class MockPaymenGateway implements PaymentService {
 
         return Mono.fromCallable(() -> {
                     log.info("total sum of products are: {}", total);
-                    return repository.save(new PaymentEntity(payment.cardNumber(), total, PaymentStatus.PAID));
+                    PaymentEntity paid = repository.save(new PaymentEntity(payment.cardNumber(), total, PaymentStatus.PAID));
+                    publisher.publish(
+                            new NotificationData(
+                                    NotificationData.Type.PAYMENT,
+                                    List.of(NotificationData.Channel.EMAIL, NotificationData.Channel.PUSH),
+                                    "payment received in the amount of  " + total + ". Paid with card: " + payment.cardNumber()
+                            )
+                    );
+                    return paid;
                 })
                 .map(paid -> mapper.toDTO(paid))
                 .subscribeOn(threadScheduler);
