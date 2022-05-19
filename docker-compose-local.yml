@@ -1,6 +1,78 @@
 version: '2.1'
 
 services:
+  discovery:
+    build: discovery
+    container_name: discovery
+    mem_limit: 256m
+    ports:
+      - "8761:8761"
+    networks:
+      - microservices
+
+  api-gateway:
+    build: api-gateway
+    container_name: api-gateway
+    mem_limit: 256m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - "8070:8070"
+    networks:
+      - microservices
+    depends_on:
+      - zipkin
+      - discovery
+
+  notification:
+    build: notification
+    container_name: notification
+    mem_limit: 256m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - "8050:8050"
+    networks:
+      - microservices
+    depends_on:
+      - mongodb
+      - zipkin
+      - discovery
+      - api-gateway
+
+  product:
+    build: product
+    container_name: product
+    mem_limit: 256m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - "8080:8080"
+    networks:
+      - microservices
+    depends_on:
+      - mongodb
+      - zipkin
+      - discovery
+      - api-gateway
+
+  payment:
+    build: payment
+    container_name: payment
+    mem_limit: 256m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - "8090:8090"
+    networks:
+      - microservices
+    depends_on:
+      - mysql
+      - zipkin
+      - discovery
+      - api-gateway
+      - notification
+
   mongodb:
     image: mongo:5.0
     container_name: mongodb

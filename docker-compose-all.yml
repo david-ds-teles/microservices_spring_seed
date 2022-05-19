@@ -1,0 +1,140 @@
+version: '2.1'
+
+services:
+  discovery:
+    build: discovery
+#    image: davidteles/discovery-microservice
+    container_name: discovery
+    mem_limit: 256m
+    ports:
+      - "8761:8761"
+    networks:
+      - microservices
+
+  api-gateway:
+    image: davidteles/api-gateway-microservice
+    container_name: api-gateway
+    mem_limit: 256m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - "8070:8070"
+    networks:
+      - microservices
+    depends_on:
+      - zipkin
+      - discovery
+
+  notification:
+    image: davidteles/notification-microservice
+    container_name: notification
+    mem_limit: 256m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - "8050:8050"
+    networks:
+      - microservices
+    depends_on:
+      - mongodb
+      - zipkin
+      - discovery
+      - api-gateway
+
+  product:
+    image: davidteles/product-microservice
+    container_name: product
+    mem_limit: 256m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - "8080:8080"
+    networks:
+      - microservices
+    depends_on:
+      - mongodb
+      - zipkin
+      - discovery
+      - api-gateway
+
+  payment:
+    image: davidteles/payment-microservice
+    container_name: payment
+    mem_limit: 256m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - "8090:8090"
+    networks:
+      - microservices
+    depends_on:
+      - mysql
+      - zipkin
+      - discovery
+      - api-gateway
+      - notification
+
+  mongodb:
+    image: mongo:5.0
+    container_name: mongodb
+    restart: always
+    mem_limit: 512m
+    ports:
+      - "27017:27017"
+    networks:
+      - microservices
+    command: mongod
+    healthcheck:
+      test: "mongo --eval 'db.stats().ok'"
+      interval: 5s
+      timeout: 2s
+      retries: 60
+
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    mem_limit: 512m
+    restart: always
+    environment:
+      MYSQL_DATABASE: payments
+      MYSQL_ROOT_PASSWORD: seed
+    ports:
+      - "3306:3306"
+    networks:
+      - microservices
+    volumes:
+      - ./scripts/db:/docker-entrypoint-initdb.d/
+    healthcheck:
+      test: "/usr/bin/mysql --user=user --password=pwd --execute \"SHOW DATABASES;\""
+      interval: 5s
+      timeout: 2s
+      retries: 60
+
+  zipkin:
+    image: openzipkin/zipkin:2
+    container_name: zipkin
+    mem_limit: 512m
+    restart: always
+    networks:
+      - microservices
+    ports:
+      - "9411:9411"
+
+  rabbitmq:
+    image: rabbitmq:3.9.11-management-alpine
+    container_name: rabbitmq
+    mem_limit: 512m
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - microservices
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 5s
+      timeout: 2s
+      retries: 60
+
+networks:
+  microservices:
+    driver: bridge

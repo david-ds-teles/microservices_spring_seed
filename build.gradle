@@ -37,6 +37,11 @@ subprojects {
         mapstructVersion = '1.4.2.Final'
         springCloudVersion = '2021.0.2'
         playtikaFeignVersion = '3.2.1'
+
+        jibPluginVersion = '3.2.1'
+        jibTag = 'latest'
+        jibFromImage = 'eclipse-temurin:17'
+        dockerRegistryName = 'davidteles'
     }
 
     dependencies {
