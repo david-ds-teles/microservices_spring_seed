@@ -1,6 +1,21 @@
 plugins {
-	id 'org.springframework.boot' version '2.6.7'
 	id 'application'
+	id 'org.springframework.boot' version "${springBootVersion}"
+	id 'com.google.cloud.tools.jib' version "${jibPluginVersion}"
+}
+
+jib {
+	var tag = "$jibTag"
+
+	from {
+		image = "$jibFromImage"
+	}
+
+	to {
+		image "$dockerRegistryName/${project.name}-microservice:$version"
+		tags = [version, tag]
+	}
+
 }
 
 application {

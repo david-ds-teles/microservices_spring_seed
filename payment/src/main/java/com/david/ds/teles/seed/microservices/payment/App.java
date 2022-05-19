@@ -11,8 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableEurekaClient
 @EnableFeignClients(
         basePackages = {
-                "com.david.ds.teles.seed.microservices.clients",
-                "com.david.ds.teles.seed.microservices.common.notification"
+                "com.david.ds.teles.seed.microservices.clients"
         }
 )
 public class App {

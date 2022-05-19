@@ -1,6 +1,26 @@
 plugins {
 	id 'org.springframework.boot' version '2.6.7'
+	id 'com.google.cloud.tools.jib' version "${jibPluginVersion}"
 }
+
+jib {
+	var tag = "$jibTag"
+
+	from {
+		image = "$jibFromImage"
+	}
+
+	to {
+		image "$dockerRegistryName/${project.name}-microservice:$version"
+		tags = [version, tag]
+	}
+
+}
+
+jar {
+	enabled = false
+}
+
 
 dependencies {
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'

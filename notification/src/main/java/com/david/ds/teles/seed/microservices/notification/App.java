@@ -7,15 +7,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 
 import java.util.List;
 
-@SpringBootApplication(
-        scanBasePackages = {
-                "com.david.ds.teles.seed.microservices.notification",
-                "com.david.ds.teles.seed.microservices.common.notification",
-        }
-)
+@SpringBootApplication
+@ComponentScan("com.david.ds.teles.seed.microservices")
 @EnableEurekaClient
 public class App {
 
