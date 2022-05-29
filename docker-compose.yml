@@ -32,7 +32,7 @@ services:
     volumes:
       - ./scripts/db:/docker-entrypoint-initdb.d/
     healthcheck:
-      test: "/usr/bin/mysql --user=user --password=pwd --execute \"SHOW DATABASES;\""
+      test: "/usr/bin/mysql --user=payments --password=seed --execute \"SHOW DATABASES;\""
       interval: 5s
       timeout: 2s
       retries: 60

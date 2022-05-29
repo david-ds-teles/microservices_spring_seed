@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: PersistentVolume
+
+metadata:
+  name: mongodb-volume
+  labels:
+    type: local
+    app: mongodb
+
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: /mnt/data
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongodb-volume-claim
+  labels:
+    app: mongodb
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
