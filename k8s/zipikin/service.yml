@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zipikin
+spec:
+  selector:
+    matchLabels:
+      app: zipikin
+  template:
+    metadata:
+      labels:
+        app: zipikin
+    spec:
+      containers:
+      - name: zipikin
+        image: openzipkin/zipkin:2
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+        ports:
+          - containerPort: 9411
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: zipikin
+spec:
+  type: LoadBalancer
+  selector:
+    app: zipikin
+  ports:
+  - port: 9411
+    targetPort: 9411
